@@ -1,6 +1,6 @@
 [submodule "sc_heritability_analysis"]
 	path = sc_heritability_analysis
 	url = https://github.com/andersonlab/sc_heritability_analysis/
-[submodule "nf_qc_cluster"]
-	path = nf_qc_cluster
-	url = https://github.com/wtsi-hgi/nf_qc_cluster
+[submodule "nf_scrna_qc"]
+	path = nf_scrna_qc
+	url = https://github.com/wtsi-hgi/nf_scrna_qc
