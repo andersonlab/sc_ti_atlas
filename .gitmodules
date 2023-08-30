@@ -4,3 +4,9 @@
 [submodule "nf_scrna_qc"]
 	path = nf_scrna_qc
 	url = https://github.com/wtsi-hgi/nf_scrna_qc
+[submodule "sc_nf_diffexpression"]
+	path = sc_nf_diffexpression
+	url = git@github.com:andersonlab/sc_nf_diffexpression.git
+[submodule "cNMF-snakemake"]
+	path = cNMF-snakemake
+	url = git@github.com:Tobi1kenobi/cNMF-snakemake.git
