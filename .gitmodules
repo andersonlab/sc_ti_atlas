@@ -1,19 +1,13 @@
 [submodule "sc_heritability_analysis"]
 	path = sc_heritability_analysis
 	url = https://github.com/andersonlab/sc_heritability_analysis.git
-[submodule "CELLECT"]
-	path = sc_heritability_analysis/CELLECT
-	url = https://github.com/perslab/CELLECT.git
-[submodule "ldsc"]
-	path = sc_heritability_analysis/CELLECT/ldsc
-	url = https://github.com/pascaltimshel/ldsc.git
 [submodule "nf_scrna_qc"]
 	path = nf_scrna_qc
 	url = https://github.com/wtsi-hgi/nf_scrna_qc.git
 [submodule "sc_nf_diffexpression"]
 	path = sc_nf_diffexpression
-	url = https://github.com:andersonlab/sc_nf_diffexpression.git
+	url = https://github.com/andersonlab/sc_nf_diffexpression.git
 [submodule "cNMF-snakemake"]
 	path = cNMF-snakemake
-	url = https://github.com:Tobi1kenobi/cNMF-snakemake.git
+	url = https://github.com/Tobi1kenobi/cNMF-snakemake.git
 
