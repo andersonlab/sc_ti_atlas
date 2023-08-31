@@ -10,9 +10,14 @@ A repository containing all the code, data and information required to reproduce
 
 ## Installation and data
 
-To install, simply use this command:
+To install, first make sure you have git lfs installed:
 ```
-git clone --recursive git@github.com:andersonlab/sc_ti_atlas.git
+conda install -conda-forge git-lfs
+```
+Then clone the repository:
+
+```
+git clone --recurse-submodules git@github.com:andersonlab/sc_ti_atlas.git
 ```
 
 Note: This command will recursively clone other GitHub repositories which are nested within this one. The overarching structure is:
@@ -29,12 +34,20 @@ The count matrices and necessary metadata can be found here:
 If you would like to skip the resource intensive QC and clustering steps, the auto-annoted discovery and replication AnnData objects can be found here:
 10.5281/zenodo.8301000
 
+```
+mkdir data; cd data
+wget https://zenodo.org/record/830100/files/discovery.h5ad?download=1 -O discovery.h5ad
+wget https://zenodo.org/record/830100/files/replication.h5ad?download=1 -O replication.h5ad
+```
+Next up you will need to install the requisite packages. The easiest way to do this is to use the following commands to create a conda environment with all the necessary packages:
+
+```
+conda env create -f env/conda.yml
+conda activate sc_ti_atlas
+```
 
 Once you have the data the following commands can be run to reproduce the key analyses found in our paper.
 
-```
-conda activate sc_ti_atlas
-```
 
 ## Quality control and clustering
 
