@@ -10,9 +10,16 @@ A repository containing all the code, data and information required to reproduce
 
 ## Installation and data
 
-To install, first make sure you have git lfs installed:
+Firstly, we highly reccomend installing mamba. It can be used like-for-like in place of conda but is much quicker. To install mamba, run the following commands:
+
 ```
-conda install -conda-forge git-lfs
+wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+bash Mambaforge-$(uname)-$(uname -m).sh
+```
+
+Next, git lfs is required to download the large files in one of the submodules. To install git lfs, run the following commands:
+```
+mamba install -c conda-forge git-lfs
 ```
 Then clone the repository:
 
@@ -42,8 +49,8 @@ wget https://zenodo.org/record/830100/files/replication.h5ad?download=1 -O repli
 Next up you will need to install the requisite packages. The easiest way to do this is to use the following commands to create a conda environment with all the necessary packages:
 
 ```
-conda env create -f env/conda.yml
-conda activate sc_ti_atlas
+mamba env create -f env/conda.yml
+mamba activate sc_ti_atlas
 ```
 
 Once you have the data the following commands can be run to reproduce the key analyses found in our paper.
