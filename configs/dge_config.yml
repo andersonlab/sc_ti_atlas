@@ -1,0 +1,50 @@
+experiment_key_column:
+    description: 'Column used to group samples to make pseudobulk.' # Note: Pseudobulk not used for sc_ti_atlas so this is irrelevant
+    value: 'sample_id'
+anndata_cell_label:
+    description: 'Anndata cell label column in obs slot.'
+    value: 'predicted_celltype_machine'
+differential_expression:
+    run_process: true
+    models:
+        description: 'List of differential formula and params.
+            All covariates in formula should be listed in either
+                variable_continuous or variable_discrete.'
+        mean_cp10k_filter: 1
+        value:
+            - method: 'mast::singlecell::glmer'
+              formula: '~ n_genes_by_counts + disease_status + sex + age_imputed + pct_counts_gene_group__mito_transcript + (1 | sample_id)'
+              variable_target: 'disease_status'
+              variable_continuous: 'n_genes_by_counts,age_imputed,pct_counts_gene_group__mito_transcript'
+              variable_discrete: 'sex,sample_id,disease_status'
+              variable_discrete_level: 'disease_status::healthy,cd;;sex::M,F'
+              pre_filter_genes: true
+              proportion_covariate_column: 'predicted_celltype_machine'
+              include_proportion_covariates: false
+
+    de_merge_config:
+        ihw_correction:
+            run_process: false
+            description: 'Run IHW to correct differential expression results.'
+            value:
+                covariates: 'cell_label,coef_value'
+                alpha: 0.1
+    de_plot_config:
+        mean_expression_filter:
+            description: 'For comparison plots, drop genes whose mean
+                expression for a group in anndata_cell_label is < this value.
+                Example: if gene A expression is 0 counts in cluster 1 and 10
+                in cluster 2, it will be dropped from cluster 1 but not cluster
+                2.'
+            value:
+                - 0.0
+    fgsea_config:
+        run_process: true
+        description: 'Parameters to run fGSEA.'
+        sample_size: 101
+        score_type: 'std'
+        value:
+            - min_set_size: 1
+              max_set_size: Inf
+              eps: 0
+              database: 'c2.cp.reactome'

@@ -1,13 +1,17 @@
 [submodule "sc_heritability_analysis"]
 	path = sc_heritability_analysis
 	url = git@github.com:andersonlab/sc_heritability_analysis.git
+	branch = main
 [submodule "nf_scrna_qc"]
 	path = nf_scrna_qc
 	url = git@github.com:wtsi-hgi/nf_scrna_qc.git
+	branch = main
 [submodule "sc_nf_diffexpression"]
 	path = sc_nf_diffexpression
 	url = git@github.com:andersonlab/sc_nf_diffexpression.git
+	branch = main
 [submodule "cNMF-snakemake"]
 	path = cNMF-snakemake
 	url = git@github.com:Tobi1kenobi/cNMF-snakemake.git
+	branch = main
 
