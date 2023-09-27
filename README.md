@@ -48,20 +48,22 @@ wget https://zenodo.org/record/830100/files/replication.h5ad?download=1 -O repli
 ```
 Next up you will need to install the requisite packages. The easiest way to do this is to use the following commands to create a conda environment with all the necessary packages:
 
-```
-mamba env create -f env/conda.yml
-mamba activate sc_ti_atlas
-pip install cellex
-```
 
 Once you have the data and packages installed the following commands can be run to reproduce the key analyses found in our paper.
 
 ## Specifically expressed genes
 
+
+```
+mamba env create -f env/heritability_env.yml
+mamba activate sc_ti_heritability
+```
+
 ```
 cd sc_heritability_analysis
+DATASET="discovery"
 ./src/run_CELLEX.py \
---h5_anndata ../data/discovery_cohort.h5ad \
+--h5_anndata ../data/${DATASET}_cohort.h5ad \
 --output_file ../out/$DATASET \
 --annotation_columns predicted_celltype_machine \
 --verbose True
@@ -70,7 +72,7 @@ cd sc_heritability_analysis
 ## Differential gene expression analysis
 
 ```
-mamba env create -f env/dge.yml
+mamba env create -f env/dge_env.yml
 mamba activate sc_ti_dge
 ```
 
@@ -93,11 +95,19 @@ nextflow run \
 
 ## Heritability partitioning
 
+Once you have run the above three analyses the results can be converted into a format that can used by the CELLECT pipeline. This can be done by running the following commands:
+
 ```
 cd sc_heritability_analysis
-./src/run_CELLEX.py \
---h5_anndata ../data/discovery_cohort.h5ad \
---output_file ../out/$DATASET \
---annotation_columns predicted_celltype_machine \
---verbose True
+Rscript src/convert_MAST.R --outpath ../out/ --dge_file ../sc_nf_diffexpression/out/differential_expression/disease_status/disease_status_dge.tsv.gz
+bash src/convert_cNMF.py
+
+```
+
+The CELLEX marker genes are already in a format acceptable by CELLECT. The next step is to run CELLECT on the discovery and replication cohorts. This can be done by running the following commands:
+
+
+```
+cd CELLECT
+snakemake --use-conda -j -s cellect-ldsc.snakefile --configfile ../../configs/heritability_config.yml
 ```
