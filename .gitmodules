@@ -9,7 +9,7 @@
 [submodule "cNMF-snakemake"]
 	path = cNMF-snakemake
 	url = git@github.com:Tobi1kenobi/cNMF-snakemake.git
-	branch = main
+	branch = master
 [submodule "sc_h2_analysis"]
 	path = sc_h2_analysis
 	url = git@github.com:andersonlab/sc_h2_analysis.git
