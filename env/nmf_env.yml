@@ -1,0 +1,22 @@
+name: sc_ti_nmf
+channels:
+  - bioconda
+  - conda-forge
+  - r
+  - defaults
+  - dylkot
+dependencies:
+  - snakemake
+  - python=3.7 
+  - fastcluster
+  - matplotlib
+  - numpy
+  - palettable
+  - pandas
+  - scipy
+  - scikit-learn>=1.0
+  - pyyaml
+  - scanpy>=1.9
+  - cnmf
+  - r-base
+  - r-lme4=1.1

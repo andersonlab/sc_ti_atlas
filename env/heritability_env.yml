@@ -1,0 +1,22 @@
+name: sc_ti_heritability
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - matplotlib-base=3.4
+  - numba=0.53.0
+  - numpy=1.20.1
+  - pandas=1.2.3
+  - plotnine=0.7.1
+  - python=3.7.10
+  - r-base=4.0.3
+  - r-ggrepel=0.9.1
+  - r-optparse=1.6.6
+  - r-patchwork=1.1.1
+  - r-reshape2=1.4.4
+  - r-scales=1.1.1
+  - r-tidyverse=1.3.0
+  - scanpy=1.9
+  - pip:
+      - cellex
