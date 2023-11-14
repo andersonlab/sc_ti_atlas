@@ -6,7 +6,7 @@ A repository containing all the code, data and information required to reproduce
 * Differential gene expression
 * Gene set enrichment analysis
 * Non-negative matrix factorisation
-* Heritability partionining
+* bility partionining
 
 ## Installation and data
 
@@ -31,7 +31,7 @@ Note: This command will recursively clone other GitHub repositories which are ne
 ```
  ┣ 📦nf_scrna_qc
  ┣ 📦cNMF-snakemake
- ┣ 📦sc_heritability_analysis
+ ┣ 📦sc_h2_analysis
  ┃ ┣ 📦CELLECT
  ┃ ┃ ┣ 📦LDSC
  ┗ 📦sc_nf_diffexpression
@@ -57,7 +57,7 @@ mamba activate sc_ti_heritability
 ```
 
 ```
-cd sc_heritability_analysis
+cd sc_h2_analysis
 DATASET="discovery"
 # DATASET="replication"
 ./src/run_CELLEX.py \
@@ -99,7 +99,7 @@ nextflow run \
 Once you have run the above three analyses the results can be converted into a format that can used by the CELLECT pipeline. This can be done by running the following commands:
 
 ```
-cd sc_heritability_analysis
+cd sc_h2_analysis
 Rscript src/convert_MAST.R --outpath ../out/ --dge_file ../sc_nf_diffexpression/out/differential_expression/disease_status/disease_status_dge.tsv.gz
 bash src/convert_cNMF.py
 
@@ -113,5 +113,5 @@ This can be done by running the following commands:
 
 ```
 cd CELLECT
-snakemake --use-conda -j -s cellect-ldsc.snakefile --configfile ../../configs/heritability_config.yml
+snakemake --use-conda -j -s cellect-ldsc.snakefile --configfile ../../configs/bility_config.yml
 ```
