@@ -1,6 +1,6 @@
 [submodule "sc_heritability_analysis"]
-	path = sc_heritability_analysis
-	url = https://github.com/andersonlab/sc_heritability_analysis.git
+	path = sc_h2_analysis
+	url = https://github.com/andersonlab/sc_h2_analysis.git
 [submodule "nf_scrna_qc"]
 	path = nf_scrna_qc
 	url = https://github.com/wtsi-hgi/nf_scrna_qc.git
