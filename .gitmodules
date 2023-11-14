@@ -1,4 +1,4 @@
-[submodule "sc_heritability_analysis"]
+[submodule "sc_h2_analysis"]
 	path = sc_h2_analysis
 	url = https://github.com/andersonlab/sc_h2_analysis.git
 	branch = main
