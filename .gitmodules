@@ -1,7 +1,3 @@
-[submodule "sc_h2_analysis"]
-	path = sc_h2_analysis
-	url = https://github.com/andersonlab/sc_h2_analysis.git
-	branch = main
 [submodule "nf_scrna_qc"]
 	path = nf_scrna_qc
 	url = git@github.com:wtsi-hgi/nf_scrna_qc.git
@@ -14,4 +10,7 @@
 	path = cNMF-snakemake
 	url = git@github.com:Tobi1kenobi/cNMF-snakemake.git
 	branch = main
-
+[submodule "sc_h2_analysis"]
+	path = sc_h2_analysis
+	url = git@github.com:andersonlab/sc_h2_analysis.git
+	branch = main
