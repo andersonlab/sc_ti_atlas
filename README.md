@@ -6,7 +6,7 @@ A repository containing all the code, data and information required to reproduce
 * Differential gene expression
 * Gene set enrichment analysis
 * Non-negative matrix factorisation
-* bility partionining
+* Heratibility partionining
 
 ## Installation and data
 
@@ -37,6 +37,7 @@ Note: This command will recursively clone other GitHub repositories which are ne
  ┗ 📦sc_nf_diffexpression
 ```
 The count matrices and necessary metadata can be found here:
+PENDING
 
 If you would like to skip the resource intensive QC and clustering steps, the auto-annoted discovery and replication AnnData objects can be found here:
 https://zenodo.org/record/8379692 
@@ -93,10 +94,14 @@ nextflow run \
 ```
 
 ## Non-negative matrix factorisation
-
+PENDING
 ## Heritability partitioning
 
 Once you have run the above three analyses the results can be converted into a format that can used by the CELLECT pipeline. This can be done by running the following commands:
+```
+mamba env create -f env/heritability_env.yml
+mamba activate sc_ti_heritability
+```
 
 ```
 cd sc_h2_analysis
@@ -105,13 +110,47 @@ bash src/convert_cNMF.py
 
 ```
 
-The CELLEX marker genes are already in a format acceptable by CELLECT. The next step is to run CELLECT on the discovery and replication cohorts. To do this the following sumstats will need to be downloaded and munged:
+The CELLEX marker genes are already in a format acceptable by CELLECT. The next step is to run CELLECT on the discovery and replication cohorts. To do this the following GWAS sumstats will need to be downloaded and munged:
+* [BMI GWAS Yengo et al. (HMG, 2018)](https://academic.oup.com/hmg/article/27/20/3641/5067845)
+* [Educational Attainment GWAS from Lee et al. (Nat. Gen., 2018)](https://www.nature.com/articles/s41588-018-0147-3)
+* [CD GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
+* [UC GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 
 This can be done by running the following commands:
-
-
-
 ```
-cd CELLECT
+mkdir gwas
+wget https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz -P gwas/
+wget https://www.dropbox.com/s/ho58e9jmytmpaf8/GWAS_EA_excl23andMe.txt -P gwas/
+wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004132/cd_build37_40266_20161107.txt.gz -P gwas/
+wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004133/uc_build37_45975_20161107.txt.gz -P gwas/
+
+python CELLECT/ldsc/mtag_munge.py \
+--sumstats example/GWAS_EA_excl23andMe.txt \
+--merge-alleles data/ldsc/w_hm3.snplist \
+--n-value 766345 \
+--keep-pval \
+--p PVAL \
+--out example/EA3_Lee2018
+
+
+python CELLECT/ldsc/mtag_munge.py \
+--sumstats example/Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz \
+--a1 Tested_Allele \
+--a2 Other_Allele \
+--merge-alleles data/ldsc/w_hm3.snplist \
+--keep-pval \
+--p PVAL \
+--out example/BMI_Yengo2018
+
+
+python CELLECT/ldsc/mtag_munge.py \
+--sumstats ...
+
+python CELLECT/ldsc/mtag_munge.py \
+--sumstats ...
+```
+
+Then to run the heritability partitioning you can use the below command:
+```
 snakemake --use-conda -j -s cellect-ldsc.snakefile --configfile ../../configs/bility_config.yml
 ```
