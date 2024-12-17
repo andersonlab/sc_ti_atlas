@@ -2,8 +2,6 @@ name: sc_ti_nmf
 channels:
   - bioconda
   - conda-forge
-  - r
-  - defaults
   - dylkot
 dependencies:
   - snakemake
