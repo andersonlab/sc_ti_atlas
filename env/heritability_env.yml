@@ -2,7 +2,6 @@ name: sc_ti_heritability
 channels:
   - bioconda
   - conda-forge
-  - defaults
 dependencies:
   - matplotlib-base=3.4
   - numba=0.53.0
