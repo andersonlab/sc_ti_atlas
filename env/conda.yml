@@ -2,7 +2,6 @@ name: sc_ti_atlas
 channels:
   - conda-forge
   - bioconda
-  - r
   - dylkot
 dependencies:
   - nextflow=23.04
