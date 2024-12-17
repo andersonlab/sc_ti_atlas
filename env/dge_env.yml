@@ -2,7 +2,6 @@ name: sc_ti_dge
 channels:
   - conda-forge
   - bioconda
-  - r
 dependencies:
   - nextflow=23.04
   - scanpy=1.9
