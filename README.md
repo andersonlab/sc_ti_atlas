@@ -90,21 +90,45 @@ mamba env create -f env/dge_env.yml
 mamba activate sc_ti_dge
 ```
 
+For the TI cohorts:
 ```
-cd sc_nf_diffexpression
-DATASET="discovery"
-# DATASET="replication"
+# Define cohorts and parameters
+cohorts=("Discovery" "Replication" "Full")
+export FREEZE="freeze_005"
+export INITIAL_DIR=$(realpath .)
+export STUDY_DIR="${INITIAL_DIR}/sc_nf_diffexpression"
+export REPO_MODULE="${STUDY_DIR}/sc_nf_diffexpression"
 
-export CUR_DIR=$(pwd)
-export SC_TI_OUTDIR="$CUR_DIR/out/discovery"
-mkdir -p "${SC_TI_OUTDIR}"
-nextflow run \
-    "main.nf" \
-     -profile "lsf" \
-     --file_anndata "$(pwd)/../data/${DATASET}_cohort.h5ad" \
-     --output_dir "${SC_TI_OUTDIR}" \
-     -params-file "$CUR_DIR/../configs/dge_config.yml" \
-     -resume
+excludes_params=(
+    "CD-inflamed params__TI-fr005-case-control.yml"
+    "CD-uninflamed params__TI-fr005-case-control.yml"
+    "Healthy-uninflamed params__TI-fr005-cds_only.yml"
+    "All-uninflamed params__TI-fr005-inflamed_cd_only.yml"
+    "CD-All params__TI-fr005-healthy_only.yml"
+)
+
+# Loop through each cohort and parameter combination
+for cohort in "${cohorts[@]}"; do
+    for pair in "${excludes_params[@]}"; do
+        export COHORT="$cohort"
+        export EXCLUDE=$(echo "$pair" | cut -d' ' -f1)
+        export PARAMS_FILE=$(echo "$pair" | cut -d' ' -f2)
+        export OUTPUT_DIR="${INITIAL_DIR}/results/${FREEZE}-cohort_${COHORT}-exclude_${EXCLUDE}/"
+        
+        mkdir -p ${OUTPUT_DIR}
+        cd ${OUTPUT_DIR}
+        echo "Running ${COHORT} cohort with ${EXCLUDE} excluded..."
+
+        export NXF_HOME=$(pwd)
+        export NXF_WORK="${NXF_HOME}/nextflow_work"
+        export NXF_TEMP="${NXF_HOME}/nextflow_temp"
+        
+        # Submit as LSF job
+        bsub -q oversubscribed -n 2 -M 10000 -R "select[mem>10000] rusage[mem=10000]" -o ${OUTPUT_DIR}/%J.out -e ${OUTPUT_DIR}/%J.err "nextflow run '${REPO_MODULE}/main.nf' -profile 'lsf' --file_anndata '/lustre/scratch127/humgen/projects_v2/sc-eqtl-ibd/analysis/tobi_analysis/gut/TI/anndata/ti-${COHORT}_cohort-exclude_${EXCLUDE}.h5ad' --output_dir '${OUTPUT_DIR}' -params-file '${STUDY_DIR}/${PARAMS_FILE}' -with-report -with-trace -with-timeline -with-dag flowchart.png -resume"
+
+        cd "${INITIAL_DIR}"
+    done
+done
 ```
 
 ## Heritability partitioning
