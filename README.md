@@ -81,7 +81,7 @@ for DATASET in discovery replication full; do
 done
 ```
 
-## Differential gene expression analysis
+## Differential gene expression and gene set enrichment analysis
 
 The following commands were used to run the differential gene expression analyssis followed by geneset enrichment analysis to determine pathways.
 
@@ -131,6 +131,10 @@ for cohort in "${cohorts[@]}"; do
 done
 ```
 
+## Differential abundance analysis
+
+To run 
+
 ## Heritability partitioning
 
 
@@ -145,6 +149,7 @@ The CELLEX marker genes are already in a format acceptable by CELLECT. The next 
 * [IBD GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 * [CD GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 * [UC GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
+* [IBD GWAS from de Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 
 
 This can be done by running the following commands:
@@ -155,6 +160,9 @@ wget https://www.dropbox.com/s/ho58e9jmytmpaf8/GWAS_EA_excl23andMe.txt -P gwas/
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004131/ibd_build37_59957_20161107.txt.gz -P gwas/
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004132/cd_build37_40266_20161107.txt.gz -P gwas/
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004133/uc_build37_45975_20161107.txt.gz -P gwas/
+```
+
+Then to munge the sumstats into a format that can be used by CELLECT, run the following commands:
 ```
 
 python CELLECT/ldsc/mtag_munge.py \
@@ -181,7 +189,7 @@ python CELLECT/ldsc/mtag_munge.py \
 --merge-alleles data/ldsc/w_hm3.snplist \
 --keep-pval \
 --p P.value
---out gwas/IBD
+--out gwas/IBD_DeLange2017
 
 python CELLECT/ldsc/mtag_munge.py \
 --sumstats gwas/cd_build37_40266_20161107.txt.gz \
@@ -190,7 +198,7 @@ python CELLECT/ldsc/mtag_munge.py \
 --merge-alleles data/ldsc/w_hm3.snplist \
 --keep-pval \
 --p P.value \
---out gwas/CD
+--out gwas/CD_DeLange2017
 
 python CELLECT/ldsc/mtag_munge.py \
 --sumstats gwas/uc_build37_45975_20161107.txt.gz \
@@ -199,7 +207,7 @@ python CELLECT/ldsc/mtag_munge.py \
 --merge-alleles data/ldsc/w_hm3.snplist \
 --keep-pval \
 --p P.value \
---out gwas/UC
+--out gwas/UC_DeLange2017
 
 Then to run the heritability partitioning you can use the below command:
 ```
