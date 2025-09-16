@@ -93,8 +93,10 @@ nextflow run \
 
 ```
 
-## Non-negative matrix factorisation
-PENDING
+## Differential abundance analysis
+
+```
+
 ## Heritability partitioning
 
 Once you have run the above three analyses the results can be converted into a format that can used by the CELLECT pipeline. This can be done by running the following commands:
@@ -115,14 +117,20 @@ The CELLEX marker genes are already in a format acceptable by CELLECT. The next 
 * [Educational Attainment GWAS from Lee et al. (Nat. Gen., 2018)](https://www.nature.com/articles/s41588-018-0147-3)
 * [CD GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 * [UC GWAS from De Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
+* [IBD GWAS from de Lange et al. (Nat. Gen., 2017)](https://www.nature.com/articles/ng.3760)
 
 This can be done by running the following commands:
 ```
 mkdir gwas
 wget https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz -P gwas/
 wget https://www.dropbox.com/s/ho58e9jmytmpaf8/GWAS_EA_excl23andMe.txt -P gwas/
+wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004131/ibd_build37_59957_20161107.txt.gz -P gwas/
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004132/cd_build37_40266_20161107.txt.gz -P gwas/
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST004001-GCST005000/GCST004133/uc_build37_45975_20161107.txt.gz -P gwas/
+```
+
+Then to munge the sumstats into a format that can be used by CELLECT, run the following commands:
+```
 
 python CELLECT/ldsc/mtag_munge.py \
 --sumstats example/GWAS_EA_excl23andMe.txt \
@@ -144,10 +152,24 @@ python CELLECT/ldsc/mtag_munge.py \
 
 
 python CELLECT/ldsc/mtag_munge.py \
---sumstats ...
+--sumstats example/cd_build37_40266_20161107.txt.gz \
+--a1 A1 \
+--a2 A2 \
+--merge-alleles data/ldsc/w_hm3.snplist \
+--n-value 20064 \
+--keep-pval \
+--p P \
+--out example/CD_DeLange2017
 
 python CELLECT/ldsc/mtag_munge.py \
---sumstats ...
+--sumstats example/uc_build37_45975_20161107.txt.gz \
+--a1 A1 \
+--a2 A2 \
+--merge-alleles data/ldsc/w_hm3.snplist \
+--n-value 27046 \
+--keep-pval \
+--p P \
+--out example/UC_DeLange2017
 ```
 
 Then to run the heritability partitioning you can use the below command:
