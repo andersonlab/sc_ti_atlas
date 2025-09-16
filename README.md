@@ -90,20 +90,18 @@ mamba env create -f env/dge_env.yml
 mamba activate sc_ti_dge
 ```
 
-For the TI cohorts:
+For the TI DGE the following cohorts and exclusions were used:
 ```
 # Define cohorts and parameters
 cohorts=("Discovery" "Replication" "Full")
-export FREEZE="freeze_005"
 export INITIAL_DIR=$(realpath .)
-export STUDY_DIR="${INITIAL_DIR}/sc_nf_diffexpression"
-export REPO_MODULE="${STUDY_DIR}/sc_nf_diffexpression"
+export REPO_MODULE="${INITIAL_DIR}/sc_nf_diffexpression"
 
+# Define which individuals to exclude when performing the analysis
 excludes_params=(
     "CD-inflamed params__TI-fr005-case-control.yml"
     "CD-uninflamed params__TI-fr005-case-control.yml"
     "Healthy-uninflamed params__TI-fr005-cds_only.yml"
-    "All-uninflamed params__TI-fr005-inflamed_cd_only.yml"
     "CD-All params__TI-fr005-healthy_only.yml"
 )
 
@@ -113,7 +111,7 @@ for cohort in "${cohorts[@]}"; do
         export COHORT="$cohort"
         export EXCLUDE=$(echo "$pair" | cut -d' ' -f1)
         export PARAMS_FILE=$(echo "$pair" | cut -d' ' -f2)
-        export OUTPUT_DIR="${INITIAL_DIR}/results/${FREEZE}-cohort_${COHORT}-exclude_${EXCLUDE}/"
+        export OUTPUT_DIR="${INITIAL_DIR}/results/ti-cohort_${COHORT}-exclude_${EXCLUDE}/"
         
         mkdir -p ${OUTPUT_DIR}
         cd ${OUTPUT_DIR}
@@ -122,14 +120,20 @@ for cohort in "${cohorts[@]}"; do
         export NXF_HOME=$(pwd)
         export NXF_WORK="${NXF_HOME}/nextflow_work"
         export NXF_TEMP="${NXF_HOME}/nextflow_temp"
-        
-        # Submit as LSF job
-        bsub -q oversubscribed -n 2 -M 10000 -R "select[mem>10000] rusage[mem=10000]" -o ${OUTPUT_DIR}/%J.out -e ${OUTPUT_DIR}/%J.err "nextflow run '${REPO_MODULE}/main.nf' -profile 'lsf' --file_anndata '/lustre/scratch127/humgen/projects_v2/sc-eqtl-ibd/analysis/tobi_analysis/gut/TI/anndata/ti-${COHORT}_cohort-exclude_${EXCLUDE}.h5ad' --output_dir '${OUTPUT_DIR}' -params-file '${STUDY_DIR}/${PARAMS_FILE}' -with-report -with-trace -with-timeline -with-dag flowchart.png -resume"
+
+        nextflow run '${REPO_MODULE}/main.nf' -profile 'lsf' --file_anndata 'anndata/ti-${COHORT}_cohort-exclude_${EXCLUDE}.h5ad' --output_dir '${OUTPUT_DIR}' -params-file '${INITIAL_DIR}/configs/dge/${PARAMS_FILE}' -with-report -with-trace -with-timeline -with-dag flowchart.png -resume
 
         cd "${INITIAL_DIR}"
     done
 done
 ```
+
+For the organoid DGE the following cohorts and exclusions were used:
+```
+# Define cohorts and parameters
+cohorts=("Organoid")
+export INITIAL_DIR=$(realpath .)
+export REPO_MODULE="${INITIAL_DIR}/sc_nf_diffexpression"
 
 ## Differential abundance analysis
 
