@@ -27,16 +27,8 @@ SPECIFICITY_INPUT:
     path: ../../out/discovery.predicted_celltype_machine.esmu.csv.gz
   - id: ti-replication-SEG
     path: ../../out/replication.predicted_celltype_machine.esmu.csv.gz
-# DGE
-  - id: ti-discovery-DEG
-    path: ../../out/TI-CD_H-discovery_cohort-DGE_CD_vs_H-norm_test_stat.deg.csv.gz
-  - id: ti-replication-DEG
-    path: ../../out/TI-CD_H-replication_cohort-DGE_CD_vs_H-norm_test_stat.deg.csv.gz
-# NMF
-  - id: ti-discovery-NMF
-    path: ../../out/ti-cd_h-freeze003_discovery-NMF_k90_0_05_score.peg.csv.gz
-  - id: ti-replication-NMF
-    path: ../../out/results/ti-cd_h-freeze003_replication-NMF_k80_0_05_score.peg.csv.gz
+  - id: ti-full-SEG
+    path: ../../out/full.predicted_celltype_machine.esmu.csv.gz
 
 
 
@@ -52,6 +44,8 @@ GWAS_SUMSTATS:
     path: data/gwas/CD_DeLange2017.sumstats.gz
   - id: ../../UC_DeLange2017
     path: data/gwas/UC_DeLange2017.sumstats.gz
+  - id: IBD_DeLange2017
+    path: data/gwas/IBD_DeLange2017.sumstats.gz
 
 
 ANALYSIS_TYPE: # specify what analysis type to run. At least one analysis type needs to be specified.
