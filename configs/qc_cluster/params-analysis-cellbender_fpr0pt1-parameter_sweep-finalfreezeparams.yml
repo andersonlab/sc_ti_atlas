@@ -1,0 +1,173 @@
+metadata_key_column:
+    description: 'Column in metadata that matches the "experiment_id" column in
+        tenx_data.'
+    value: 'sanger_sample_id'
+plots_qc:
+    description: 'Parameters for basic QC plots after sample merge. All
+        pairwise combinations of facet_columns and
+        variable_columns_distribution_plots will be performed.'
+    facet_columns:
+        description: 'Column to facet all QC plots by. Use "" to give no
+            facets'
+        value:
+            - ''
+            - 'experiment_id,sex,disease_status'
+    variable_columns_distribution_plots:
+        description: 'Plot the distributions of these variables (histogram and
+            ecdf). NOTE: leaving out pct_counts_gene_group__ribo_rna since it
+            is empty for our data.'
+        value:
+            - 'total_counts'
+            - 'pct_counts_gene_group__mito_transcript'
+            - 'pct_counts_gene_group__mito_protein'
+            - 'pct_counts_gene_group__ribo_protein'
+reduced_dims:
+    run_downstream_analysis: false
+    description: 'Parameters for dimensionality reduction (principal component
+        and harmony calculations). All pairwise combinations of
+        vars_to_regress and n_dims will be performed.'
+    vars_to_regress:
+        description: 'Comma separated string of variables to regress. Use "" to
+            indicate no regression is to be performed.'
+        value:
+            - ''
+    n_dims:
+        description: 'Number of dimensions to use for calculating PCs,
+            harmony corrected PCs, and clusters. Value should be int.
+            If auto_estimate == true then the "knee" of a scree plot is
+            automatically estimated via the kneedle algorithm and used. If
+            auto_estimate == true then value is ignored.'
+        auto_estimate: true
+        add_n_to_estimate: 5
+        value:
+            - 27
+harmony:
+    run_process: false
+    description: 'Parameters for harmony.'
+    variables_and_thetas:
+        description: 'Tuples of metadata columns and corresponding thetas.'
+        value:
+            - variable: 'experiment_id'
+              theta: '0.5'
+            - variable: 'experiment_id'
+              theta: '1.0'
+            - variable: 'experiment_id'
+              theta: '2.0'
+bbknn:
+    run_process: true
+    description: 'Parameters for BBKNN'
+    batch_variable:
+        description: 'Variable to use for batch correction'
+        value:
+            - 'experiment_id'
+lisi:
+    run_process: true
+    description: 'Parameters for Local Inverse Simpsons Index (LISI).'
+    variables:
+        description: 'Metadata variables to compute LISI over.'
+        value: 'experiment_id,disease_status'
+cluster:
+    description: 'Parameters for clustering. All pairwise combinations of
+        method and resolution will be performed.'
+    number_neighbors:
+        description: 'Number of neighbors. If <= 0, uses number of unique
+            experiment_id.'
+        value:
+            - 30
+            - 50
+            - 100
+    methods:
+        description: 'Clustering method. Valid options [leiden|louvain].'
+        value:
+            - 'leiden'
+    resolutions:
+        description: 'Clustering resolution.'
+        value:
+            - 0.5
+            - 1.0
+            - 1.5
+            - 2.0
+            - 2.5
+            - 2.75
+            - 3.0
+            - 3.25
+            - 3.5
+            - 4.0
+            - 5.0
+    variables_boxplot:
+        decription: 'Generate boxplots of these variables for each cluster.'
+        value:
+            - 'total_counts,age,pct_counts_gene_group__mito_transcript,pct_counts_gene_group__mito_protein,pct_counts_gene_group__ribo_protein,scrublet__multiplet_zscores,S_score,G2M_score,b_cell__activation,b_cell__differentiation,colon_compartment__epithelial,colon_compartment__immune,colon_compartment__stromal,crypt__axis_score,t_cell__coinhibition_signature,t_cell__costimulation_signature,t_cell__cytotoxicity_signature,t_cell__cd8_cytotoxic,t_cell__cell_cycling,t_cell__central_memory,t_cell__immunoregulation,t_cell__resident_memory,villus__bottom_enterocytes,villus__top_enterocytes,hallmark_apoptosis,hallmark_hypoxia,mense_hypoxia_up,hallmark_inflammatory_response,inflammation_signature__smilliecs_31348891,colon_compartment__epithelial,colon_compartment__immune,colon_compartment__stromal'
+    known_markers:
+        run_process: false
+        description: 'Files with markers that will be used to generate
+            dotplots. Each marker file should be the full path and have the
+            following columns: cell_type, hgnc_symbol. The following columns
+            are optional: p_value_adj. Use "" for a single entry in the
+            file_id and file value to indicate no plots.'
+        value:
+            - file_id: 'SmillieCS_31348891'
+              file: '/lustre/scratch126/humgen/projects/sc-eqtl-ibd/data/marker_gene_db-raw_data/database/celltypes/colon/SmillieCS-31348891/database.tsv'
+cluster_validate_resolution:
+    description: 'Parameters for cluster resolution validation.'
+    sparsity:
+        description: 'LogisticRegression sparsity or inverse of regularization
+            strength; must be a positive float. Like in support vector
+            machines, smaller values specify stronger regularization.'
+        value:
+            - 0.0001
+    train_size_cells:
+        description: 'Number of cells to use for training. Set to -1 for
+            to use default of 2/3 of total cells. Do not change this parameter
+            unless you know what you are doing.'
+        value:
+            - -1
+cluster_marker:
+    description: 'Parameters for identifying cluster marker features.'
+    methods:
+        description: 'Method for marker detection.'
+        value:
+            - 'wilcoxon'
+umap:
+    run_process: false
+    description: 'Parameters for umap.'
+    colors_quantitative:
+        description: 'Comma separated string of quantitative variables that
+            will be used to color points. Used for PCA plots also.'
+        value: 'total_counts,age,pct_counts_gene_group__mito_transcript'
+    colors_categorical:
+        description: 'Comma separated string of categorical variables that
+            will be used to color points. Used for PCA plots also.'
+        value: 'experiment_id,sex,disease_status'
+    n_neighbors:
+        description: 'Number of neighbors for sc.pp.neighbors call.
+            Recommended value between 2-100. If you expect each cell type
+            cluster to be shared across all experiments/samples, then setting
+            this number to the number of experiments/samples is a good place to
+            start.'
+        value:
+            - 30
+            - 50
+            - 100
+    umap_init:
+        description: 'How to initialize the low dimensional embedding.'
+        value:
+            - 'spectral'
+    umap_min_dist:
+        description: 'The effective minimum distance between embedded points.
+            Recommended value between 0-1. Note: values separated with a comma
+            will be run within the same script call (rather than swarm).'
+        value:
+            - 0.0
+            - 0.25
+            - 0.5
+            - 0.75
+            - 1.0
+    umap_spread:
+        description: 'The effective scale of embedded points.
+            Recommended value between 0-3. Note: values separated with a comma
+            will be run within the same script call (rather than swarm).'
+        value:
+            - 0.5
+            - 1.0
+            - 2.5

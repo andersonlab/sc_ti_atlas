@@ -13,13 +13,14 @@ differential_expression:
         mean_cp10k_filter: 1
         value:
             - method: 'mast::singlecell::glmer'
-              formula: '~ n_genes_by_counts + disease_status + sex + age_binned + pct_counts_gene_group__mito_transcript + (1 | donor)'
-              variable_target: 'disease_status'
+              formula: '~ n_genes_by_counts + stimulated + disease_status + sex + age_binned + pct_counts_gene_group__mito_transcript + (1 | donor)'
+              variable_target: 'stimulated'
               variable_continuous: 'n_genes_by_counts,age_binned,pct_counts_gene_group__mito_transcript'
-              variable_discrete: 'sex,donor,disease_status'
-              variable_discrete_level: 'sex::Male,Female,disease_status::Healthy,CD'
+              variable_discrete: 'sex,donor,stimulated,disease_status'
+              variable_discrete_level: 'stimulated::Control,Stimulated;;sex::Male,Female,disease_status::Healthy,CD'
               pre_filter_genes: true
               proportion_covariate_column: 'label_machine'
+              include_proportion_covariates: false
     de_merge_config:
         ihw_correction:
             run_process: false

@@ -1,0 +1,54 @@
+sample_qc:
+    description: 'Parameters for sample QC prior to merge.
+        Filters are applied to all samples.'
+    cell_filters:
+        description: 'Cell filters. Each bullet point is a seperate filter.
+            Cells that evaluate to true for any of these filters, will be
+            removed. Filters under "all_samples" are applied to all samples.
+            Filters under a sample id are applied to that specific sample.
+            NOTE: Here we use a pct_counts_gene_group__mito_transcript filter
+            of 29, which is 3 MADs in the whole TI dataset.'
+        all_samples:
+            description: 'Cell filters applied to all samples.'
+            value:
+                - 'scrublet__predicted_multiplet == True'
+                - 'pct_counts_gene_group__mito_transcript > 50'
+                - 'n_genes_by_counts < 100'
+        filter_outliers:
+            description: 'After applying cell filters based on cutoffs, apply
+                an filter to remove outliers using cell information from
+                metadata_columns.
+                Recommended settings:
+                    method: IsolationForest
+                    metadata_columns: pct_counts_gene_group__mito_transcript,log1p_total_counts,log1p_n_genes_by_counts
+                    outliers_fraction: 0.0
+                    max_cells: 0.1 or 1.0
+                Notes:
+                * Filters applied across the full dataset (i.e., not on a per
+                    sample level).
+                * Valid methods: LocalOutlierFactor, IsolationForest,
+                    EllipticEnvelope, OneClassSVM.
+                * outliers_fraction: anticipated fraction of outlier cells.
+                    If 0.0, then runs sklearn methods with "auto" as the
+                    anticipated number of outlier cells.
+                * max_samples: The fraction of cells to draw from X to train
+                    each estimator. Only valid if method == IsolationForest.'
+            run_process: true
+            method: 'IsolationForest'
+            metadata_columns: 'pct_counts_gene_group__mito_transcript,log1p_total_counts,log1p_n_genes_by_counts'
+            outliers_fraction: 0.0
+            max_samples: 0.1
+    downsample_cells_fraction:
+        description: 'Downsample to this fraction of the number of
+            observations (sc.pp.subsample). Use "" to indicate no downsampling.
+            Example: if 0.8, will drop 20% of cells.'
+        value: ''
+    downsample_cells_n:
+        description: 'Downsample to this number of observations
+            (sc.pp.subsample). Use "" to indicate no downsampling. Example: if
+            200 then 200 total cells will be kept.'
+        value: ''
+    downsample_feature_counts:
+        description: 'Downsample the number of feature counts by this fraction.
+            Use "" to indicate no downsampling.'
+        value: ''
