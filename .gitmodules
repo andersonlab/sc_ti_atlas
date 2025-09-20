@@ -1,7 +1,3 @@
-[submodule "sc_nextflow"]
-	path = sc_nextflow
-	url = git@github.com:andersonlab/sc_nextflow.git
-	branch = main
 [submodule "CELLECT"]
 	path = CELLECT
 	url = git@github.com:perslab/CELLECT.git
@@ -10,3 +6,6 @@
 	path = sc_h2_analysis
 	url = git@github.com:andersonlab/sc_h2_analysis.git
 	branch = main
+[submodule "sc_nextflow"]
+	path = sc_nextflow
+	url = https://github.com/andersonlab/sc_nextflow
