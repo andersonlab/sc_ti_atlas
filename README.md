@@ -10,7 +10,6 @@ A repository containing the code, data and information required to reproduce the
 ## Installation and data
 
 Firstly, we use a combination of pip and singularity to manage the software environments. To install pip, follow the instructions on the [pip installation page](https://pip.pypa.io/en/stable/installation/). And to install singularity, follow the instructions on the [singularity installation page](https://sylabs.io/guides/3.0/user-guide/installation.html).
-```
 
 Next, *git lfs is required* to download the large files in one of the submodules. To install git lfs, visit the [git lfs installation page](https://git-lfs.com/) and follow the instructions for your system.
 
